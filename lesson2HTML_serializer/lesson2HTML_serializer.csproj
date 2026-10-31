@@ -7,7 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <!-- תוקן: העתקת קבצי ה-JSON לתיקיית ההרצה, אחרת File.ReadAllText לא ימצא אותם -->
   <ItemGroup>
     <None Update="HtmlTags.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="HtmlVoidTags.json" CopyToOutputDirectory="PreserveNewest" />

@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace lesson2HTML_serializer
 {
-    // המחלקה עוטפת את הטעינה מהאינטרנט ואת בניית העץ (הקוד הועבר מ-Program.cs)
     internal class HtmlSerializer
     {
-        // הורדת ה-HTML מהכתובת
+        public static readonly string[] HtmlTags = JsonSerializer.Deserialize<string[]>(File.ReadAllText("HtmlTags.json")) ?? Array.Empty<string>();
+        public static readonly string[] HtmlVoidTags = JsonSerializer.Deserialize<string[]>(File.ReadAllText("HtmlVoidTags.json")) ?? Array.Empty<string>();
+
         public async Task<string> Load(string url)
         {
             HttpClient client = new HttpClient();
@@ -17,7 +19,6 @@ namespace lesson2HTML_serializer
             return html;
         }
 
-        // בניית עץ האלמנטים מתוך מחרוזת ה-HTML, ומחזירה את השורש
         public HtmlElement Serialize(string html)
         {
             var htmlClean = new Regex("\\s").Replace(html, " ");
@@ -43,7 +44,7 @@ namespace lesson2HTML_serializer
 
                 var tagName = firstWord.TrimEnd('/');
 
-                if (HtmlHelper.Instance.HtmlTags.Contains(tagName))
+                if (HtmlSerializer.HtmlTags.Contains(tagName))
                 {
                     var newElement = new HtmlElement { Parent = thisHelement, Name = tagName };
                     thisHelement.Children.Add(newElement);
@@ -60,7 +61,7 @@ namespace lesson2HTML_serializer
                         if (name == "id")
                             newElement.Id = value;
                     }
-                    bool isSelfClosing = line.EndsWith("/") || HtmlHelper.Instance.HtmlVoidTags.Contains(tagName);
+                    bool isSelfClosing = line.EndsWith("/") || HtmlSerializer.HtmlVoidTags.Contains(tagName);
 
                     if (!isSelfClosing)
                         thisHelement = newElement;

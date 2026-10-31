@@ -34,7 +34,7 @@ namespace lesson2HTML_serializer
                         thisHelement.Id = part.Substring(1);
                     else if (part.StartsWith("."))
                         thisHelement.Classes.Add(part.Substring(1));
-                    else if (HtmlHelper.Instance.HtmlTags.Contains(part))
+                    else if (HtmlSerializer.HtmlTags.Contains(part))
                         thisHelement.TagName = part;
                 }
                 if (i < levelQuery.Length - 1)
